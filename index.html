@@ -43,7 +43,7 @@
       background-size: 24px 24px;
     }
 
-    /* HEADER CON IDIOMA Y BOTÓN INICIO A LA DERECHA */
+    /* HEADER CON SELECTOR DE IDIOMA Y BOTÓN INICIO A LA DERECHA */
     header { width: 100%; max-width: 920px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 
     .brand-title-box { text-align: left; }
@@ -71,7 +71,7 @@
       position: relative;
     }
 
-    /* PANTALLA INICIAL HERO */
+    /* PANTALLA INICIAL HERO 100% LIMPIA */
     .hero-card {
       background: linear-gradient(135deg, #fdfbf7 0%, #f4ede2 100%);
       border: 1px solid var(--border-color);
@@ -169,7 +169,7 @@
     .loading-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: var(--accent-burgundy); margin-bottom: 8px; }
     .loading-desc { color: var(--text-muted); font-size: 0.95rem; }
 
-    /* RESULTAT FINAL */
+    /* RESULTAT FINAL SENSE IMATGES (NET I NET) */
     .result-document { background: #ffffff; border: 1px solid var(--border-color); padding: 40px; border-radius: 8px; }
     .doc-header { text-align: center; border-bottom: 2px solid var(--accent-gold); padding-bottom: 18px; margin-bottom: 30px; }
     .doc-genre { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-gold); font-weight: 700; }
@@ -178,9 +178,7 @@
     .doc-section-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: var(--accent-ink); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
     .doc-paragraph { font-size: 0.96rem; line-height: 1.75; color: #38322e; text-align: justify; margin-bottom: 12px; }
 
-    .character-entry { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 18px; background: #faf8f5; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; }
-    .character-img-frame { flex-shrink: 0; width: 120px; height: 160px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); background: #eee; }
-    .character-img-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .character-entry-clean { background: #faf8f5; border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; margin-bottom: 14px; }
 
     /* PEU DE PÀGINA SUBTIL */
     .footer-left-tr { margin-top: 25px; text-align: left; font-size: 0.78rem; color: var(--text-muted); }
@@ -233,8 +231,6 @@
       .form-grid { grid-template-columns: 1fr; }
       .form-group-full { grid-column: span 1; }
       .app-card { padding: 20px; }
-      .character-entry { flex-direction: column; }
-      .character-img-frame { width: 100%; height: 200px; }
     }
   </style>
 </head>
@@ -375,13 +371,12 @@
               </div>
             </div>
 
-            <!-- ASPECTE FÍSIC COMPACTE AL COSTAT DRETA -->
             <div class="aspect-box">
               <label class="field-label" style="color:var(--accent-burgundy); font-size:0.82rem;" id="lblP1Asp">
                 Aspecte Físic / Descripció Visual
                 <span class="info-tooltip-container">
                   <i data-lucide="info" class="info-icon"></i>
-                  <span class="tooltip-box" id="ttP1Asp">Descripció per generar una representació visual fidel per IA.</span>
+                  <span class="tooltip-box" id="ttP1Asp">Descripció per detallar els trets físics del personatge.</span>
                 </span>
               </label>
               <textarea class="input-text" id="protaAspecte" style="height:115px; font-size:0.88rem;" placeholder="Ex: Noi jove de 17 anys, cabells foscos curts, ulls expressius, vestit amb dessuadora d'institut..."></textarea>
@@ -420,7 +415,6 @@
           </div>
         </div>
 
-        <!-- DIVISIÓ SPLIT MEITAT I MEITAT -->
         <div>
           <span class="field-label" style="color:var(--accent-ink); font-size:0.88rem;" id="lblAntaTitle">ANTAGONISTA / OPOSITOR</span>
           <input type="text" class="input-text" id="antaNom" placeholder="Nom (Ex: Persona tòxica / Sergi)" style="margin-bottom:6px;">
@@ -449,7 +443,7 @@
 
       <div class="form-grid">
         <div class="form-group-full">
-          <label class="field-label" id="lbl3_1">3.1 Conflicte del Protagonista amb:</label>
+          <label class="field-label" id="lbl3_1">3.1 Conflicte del Protagonista con:</label>
           <div class="tags-container" id="conflicteTags">
             <span class="tag-btn" onclick="toggleTag(this)" id="tagPersona">Persona</span>
             <span class="tag-btn" onclick="toggleTag(this)" id="tagFam">Família</span>
@@ -561,7 +555,7 @@
         <div class="form-group-full">
           <label class="field-label" id="lblGenreFinal">Gènere de la teva obra:</label>
           <div class="genre-chips-container" id="genreChipsArea">
-            <!-- Generat dinàmicament en una sola línia per la IA -->
+            <!-- Generat dinàmicament -->
           </div>
           <input type="text" class="input-text" id="genereCustom" placeholder="O escriu tu mateix el gènere...">
         </div>
@@ -580,10 +574,10 @@
         <i data-lucide="sparkles" style="width:30px; height:30px;"></i>
       </div>
       <div class="loading-title" id="loadingTitle">Generant la teva obra...</div>
-      <div class="loading-desc" id="loadingDesc">La IA està estructurant l'anàlisi completa, la sinopsi argumental i les representacions visuals dels personatges.</div>
+      <div class="loading-desc" id="loadingDesc">La IA està estructurant l'anàlisi completa i la sinopsi argumental.</div>
     </div>
 
-    <!-- RESULTAT FINAL -->
+    <!-- RESULTAT FINAL NET I ELEGANT -->
     <div class="step-panel" id="stepResult">
       <div class="step-header">
         <div>
@@ -702,7 +696,6 @@
     let teSegonProta = false;
     let currentLang = 'ca';
 
-    // DEPURACIÓ STRICTA D'ARTICLES EN NOMS PROPIS
     function netejarArticlesNom(nom) {
       if (!nom) return "";
       return nom.trim().replace(/^(el|la|l'|en|na|los|las|un|una)\s+/i, "");
@@ -742,7 +735,7 @@
         document.getElementById('lblP1Vir').innerText = "Virtud:";
         document.getElementById('lblP1Def').innerText = "Defecto:";
         document.getElementById('lblP1Asp').innerText = "Aspecto Físico / Descripción Visual";
-        document.getElementById('ttP1Asp').innerText = "Descripción para generar una representación visual fiel por IA.";
+        document.getElementById('ttP1Asp').innerText = "Descripción para detallar los rasgos físicos del personaje.";
         document.getElementById('lblP1ArcIni').innerText = "Evolución Inicial:";
         document.getElementById('lblP1ArcFin').innerText = "Evolución Final:";
         document.getElementById('lblAntaTitle').innerText = "ANTAGONISTA / OPOSITOR";
@@ -777,7 +770,7 @@
         document.getElementById('btnGenFinalText').innerText = "Generar Análisis Completo de la Obra";
         
         document.getElementById('loadingTitle').innerText = "Generando tu obra...";
-        document.getElementById('loadingDesc').innerText = "La IA está estructurando el análisis completo, la sinopsis y las representaciones visuales.";
+        document.getElementById('loadingDesc').innerText = "La IA está estructurando el análisis completo y la sinopsis.";
         
         document.getElementById('lblDocHeaderTitle').innerText = "Análisis Completo de la Obra";
         document.getElementById('lblDocHeaderDesc').innerText = "Estructura formal desarrollada según el método del Trabajo de Investigación.";
@@ -967,7 +960,7 @@
         document.getElementById('loadingScreen').style.display = 'none';
         document.getElementById('stepResult').classList.add('active');
         generarDocumentTR();
-      }, 1800);
+      }, 1200);
     }
 
     function tornarAEditar() {
@@ -1015,26 +1008,25 @@
 
       const nomProtaRaw = document.getElementById('protaNom').value || "Héctor";
       const nomProta = netejarArticlesNom(nomProtaRaw);
-      const aspecteProta = document.getElementById('protaAspecte').value || (currentLang === 'es' ? "joven de 17 años de estilo informal, ojos expresivos y aspecto reservado" : "noi jove de 17 anys d'estil informal, ulls expressius i aspecte reservat");
+      const aspecteProta = document.getElementById('protaAspecte').value || "";
       const objectiu = document.getElementById('protaObjectiu').value || (currentLang === 'es' ? "proteger su imagen y lograr lo que desea" : "protegir la seva imatge i aconseguir el que desitja");
       const virtut = document.getElementById('protaVirtut').value || (currentLang === 'es' ? "la capacidad de expresarse en privado" : "la capacitat d'expressar-se en privat");
-      const defecte = document.getElementById('protaDefecte').value || (currentLang === 'es' ? "el miedo al rechazo y la cobardía" : "la por al rebuig i la cobardia");
+      const defecte = document.getElementById('protaDefecte').value || (currentLang === 'es' ? "el miedo al rechazo y la cobardía" : "el miedo al rebuig i la cobardia");
       const arcIni = document.getElementById('arcInici').value || (currentLang === 'es' ? "la ocultación, la negación y el miedo" : "l'ocultació, la negació i la por");
       const arcFin = document.getElementById('arcFinal').value || (currentLang === 'es' ? "reconocer sus sentimientos y afrontar públicamente la verdad" : "reconèixer els seus sentiments i afrontar públicament la veritat");
 
       const nomProta2Raw = document.getElementById('prota2Nom').value || "Bárbara";
       const nomProta2 = netejarArticlesNom(nomProta2Raw);
-      const aspecteProta2 = document.getElementById('prota2Aspecte').value || "joven de 17 años";
+      const aspecteProta2 = document.getElementById('prota2Aspecte').value || "";
 
       const nomAntaRaw = document.getElementById('antaNom').value || (currentLang === 'es' ? "Persona tóxica / Entorno" : "Persona tòxica / Entorn");
       const nomAnta = netejarArticlesNom(nomAntaRaw);
-      const antaMotivacio = document.getElementById('antaMotivacio').value || (currentLang === 'es' ? "mantener la manipulación sobre el protagonista" : "mantenir la manipulació sobre el protagonista");
-      const aspecteAnta = document.getElementById('antaAspecte').value || "joven de actitud dominante";
+      const aspecteAnta = document.getElementById('antaAspecte').value || "";
 
       const nomSecRaw = document.getElementById('secNom').value || "Martí";
       const nomSec = netejarArticlesNom(nomSecRaw);
       const secRol = document.getElementById('secRol').value || (currentLang === 'es' ? "compañero que ayuda a abrir los ojos al protagonista" : "company que ajuda a obrir els ulls al protagonista");
-      const aspecteSec = document.getElementById('secAspecte').value || "joven de estilo sencillo";
+      const aspecteSec = document.getElementById('secAspecte').value || "";
 
       const cnfTags = getSelectedTags('conflicteTags');
       const cnfCustom = document.getElementById('cnfCustom').value;
@@ -1053,11 +1045,6 @@
       const girInesperat = document.getElementById('girInesperat').value || (currentLang === 'es' ? "la revelación no prevista que cambia la percepción de los hechos" : "la revelació no prevista que canvia la percepció dels fets");
       const expectativa = document.getElementById('expectativaPublic').value || (currentLang === 'es' ? "que el protagonista mantenga su situación sin cambios" : "que el protagonista mantingui la seva situació sense canvis");
       const realitatPub = document.getElementById('realitatPublic').value || (currentLang === 'es' ? "la verdad sale a la luz y se asume la responsabilidad de los hechos" : "la veritat surt a la llum i s'assumeix la responsabilitat dels fets");
-
-      const imgProtaUrl = `https://pollinations.ai/p/${encodeURIComponent(`cinematic photo portrait of a 17 year old named ${nomProta},${aspecteProta}, realistic`)}?width=250&height=320&seed=12&nologo=true`;
-      const imgProta2Url = `https://pollinations.ai/p/${encodeURIComponent(`cinematic photo portrait of a 17 year old named ${nomProta2},${aspecteProta2}, realistic`)}?width=250&height=320&seed=22&nologo=true`;
-      const imgAntaUrl = `https://pollinations.ai/p/${encodeURIComponent(`cinematic photo portrait of a young person named ${nomAnta},${aspecteAnta}, realistic`)}?width=250&height=320&seed=32&nologo=true`;
-      const imgSecUrl = `https://pollinations.ai/p/${encodeURIComponent(`cinematic photo portrait of a young person named ${nomSec},${aspecteSec}, realistic`)}?width=250&height=320&seed=42&nologo=true`;
 
       if (currentLang === 'es') {
         document.getElementById('resultDoc').innerHTML = `
@@ -1089,42 +1076,30 @@
           <div class="doc-section">
             <h3 class="doc-section-title">3. Personajes y evolución</h3>
             
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgProtaUrl}" alt="${nomProta}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomProta}:</strong> Protagonista principal que vive una contradicción entre su identidad privada y el comportamiento que muestra. Su falla moral es <em>${defecte}</em>, lo que le lleva a actuar contra su objetivo de ${objectiu.toLowerCase()}, aunque demuestra <em>${virtut.toLowerCase()}</em>. Pasa de ${arcIni.toLowerCase()} a ${arcFin.toLowerCase()}.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta} (Protagonista):</strong> Vivirá una contradicción entre su identidad privada y el comportamiento público. Su falla moral es <em>${defecte}</em>, lo que le lleva a actuar contra su objetivo de ${objectiu.toLowerCase()}, aunque demuestra <em>${virtut.toLowerCase()}</em>. Pasa de ${arcIni.toLowerCase()} a ${arcFin.toLowerCase()}.${aspecteProta ? ` <em>(${aspecteProta})</em>` : ''}
+              </p>
             </div>
 
             ${teSegonProta ? `
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgProta2Url}" alt="${nomProta2}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomProta2}:</strong> Segunda figura central que actúa como espejo de las contradicciones de <strong>${nomProta}</strong>.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta2} (Co-protagonista):</strong> Segunda figura central que actúa como espejo de las contradicciones de <strong>${nomProta}</strong>.${aspecteProta2 ? ` <em>(${aspecteProta2})</em>` : ''}
+              </p>
             </div>
             ` : ''}
 
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgSecUrl}" alt="${nomSec}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomSec}:</strong> ${secRol}. Su presencia es clave para forzar a <strong>${nomProta}</strong> a tomar una posición coherente.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomSec} (Secundario Clave):</strong> ${secRol}. Su presencia es clave para forzar a <strong>${nomProta}</strong> a tomar una posición coherente.${aspecteSec ? ` <em>(${aspecteSec})</em>` : ''}
+              </p>
             </div>
 
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgAntaUrl}" alt="${nomAnta}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomAnta}:</strong> Fuerza opositora principal que representa la presión social y la resistencia al cambio.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomAnta} (Antagonista / Opositor):</strong> Fuerza opositora principal que representa la presión social y la resistencia al cambio.${aspecteAnta ? ` <em>(${aspecteAnta})</em>` : ''}
+              </p>
             </div>
           </div>
 
@@ -1175,48 +1150,36 @@
           <div class="doc-section">
             <h3 class="doc-section-title">3. Personatges i evolució</h3>
             
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgProtaUrl}" alt="${nomProta}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomProta}:</strong> Protagonista principal que viu una contradicció entre la seva identitat privada i el comportament que mostra. La seva falla moral és <em>${defecte}</em>, que el porta a actuar contra el seu objectiu de ${objectiu.toLowerCase()}, tot i que demostra <em>${virtut.toLowerCase()}</em>. Passa de ${arcIni.toLowerCase()} a ${arcFin.toLowerCase()}.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta} (Protagonista):</strong> Viurà una contradicció entre la seva identitat privada i el comportament públic. La seva falla moral és <em>${defecte}</em>, que el porta a actuar contra el seu objectiu de ${objectiu.toLowerCase()}, tot i que demostra <em>${virtut.toLowerCase()}</em>. Passa de ${arcIni.toLowerCase()} a ${arcFin.toLowerCase()}.${aspecteProta ? ` <em>(${aspecteProta})</em>` : ''}
+              </p>
             </div>
 
             ${teSegonProta ? `
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgProta2Url}" alt="${nomProta2}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomProta2}:</strong> Segona figura central que actua com a mirall de les contradiccions de <strong>${nomProta}</strong>.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta2} (Co-protagonista):</strong> Segona figura central que actua com a mirall de les contradiccions de <strong>${nomProta}</strong>.${aspecteProta2 ? ` <em>(${aspecteProta2})</em>` : ''}
+              </p>
             </div>
             ` : ''}
 
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgSecUrl}" alt="${nomSec}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomSec}:</strong> ${secRol}. La seva presència és clau per forçar <strong>${nomProta}</strong> a prendre una posició coherent.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomSec} (Secundari Clau):</strong> ${secRol}. La seva presència és clau per forçar <strong>${nomProta}</strong> a prendre una posició coherent.${aspecteSec ? ` <em>(${aspecteSec})</em>` : ''}
+              </p>
             </div>
 
-            <div class="character-entry">
-              <div class="character-img-frame"><img src="${imgAntaUrl}" alt="${nomAnta}"></div>
-              <div>
-                <p class="doc-paragraph" style="margin-bottom:0;">
-                  <strong>${nomAnta}:</strong> Força opositora principal que representa la pressió social i la resistència al canvi.
-                </p>
-              </div>
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomAnta} (Antagonista / Opositor):</strong> Força opositora principal que representa la pressió social i la resistència al canvi.${aspecteAnta ? ` <em>(${aspecteAnta})</em>` : ''}
+              </p>
             </div>
           </div>
 
           <div class="doc-section">
             <h3 class="doc-section-title">4. Temes i qüestions de fons</h3>
-            <p class="doc-paragraph">/Users/arnauramirez/Downloads/backup2.html
+            <p class="doc-paragraph">
               L'obra tracta <strong>${temesFinals}</strong>. Explora la necessitat de pertànyer a un grup i la dificultat d'assumir la pròpia identitat.
             </p>
             <p class="doc-paragraph">
