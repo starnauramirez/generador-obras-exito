@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador d'obres d'èxit - Arnau Ramírez</title>
+
+  <!-- Tipografies editorials -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg-paper: #f7f4ee;
+      --card-bg: #ffffff;
+      --border-color: #e2dacd;
+      --border-focus: #a38238;
+      --text-main: #2a2421;
+      --text-muted: #6e655f;
+      --accent-gold: #b8860b;
+      --accent-burgundy: #6b2d35;
+      --accent-ink: #1a2b4c;
+      --shadow: 0 16px 40px rgba(42, 36, 33, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-paper);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 25px 20px 80px 20px;
+      background-image: radial-gradient(#e6dfd3 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    header { width: 100%; max-width: 920px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+    .brand-title-box { text-align: left; }
+    .brand-title { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 800; color: var(--text-main); }
+    .brand-subtitle { font-size: 0.85rem; color: var(--accent-burgundy); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+
+    .lang-selector-header { display: flex; background: #fff; border: 1px solid var(--border-color); border-radius: 20px; padding: 2px; }
+    .lang-btn-h { background: none; border: none; padding: 4px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: var(--text-muted); }
+    .lang-btn-h.active { background: var(--accent-burgundy); color: #fff; }
+
+    .btn-top-home { background: #fff; border: 1px solid var(--border-color); color: var(--text-muted); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s; }
+    .btn-top-home:hover { color: var(--accent-burgundy); border-color: var(--accent-burgundy); }
+
+    .app-card {
+      width: 100%;
+      max-width: 920px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 38px;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 0.5s ease;
+      position: relative;
+    }
+
+    .hero-card {
+      background: linear-gradient(135deg, #fdfbf7 0%, #f4ede2 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 35px 25px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-burgundy);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+    }
+
+    .hero-title { font-family: 'Playfair Display', Georgia, serif; font-size: 2.1rem; color: var(--text-main); margin-bottom: 12px; line-height: 1.25; }
+    .hero-desc { font-size: 0.98rem; line-height: 1.65; color: #4a433e; max-width: 680px; margin: 0 auto 25px auto; }
+
+    .progress-container { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); }
+    .progress-bar-bg { width: 100%; height: 6px; background: #efe9df; border-radius: 10px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-gold), var(--accent-burgundy)); transition: width 0.4s ease; border-radius: 10px; }
+
+    .step-panel { display: none; animation: fadeIn 0.4s ease; }
+    .step-panel.active { display: block; }
+    .step-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+    .step-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.65rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .step-title i { color: var(--accent-gold); }
+    .step-desc { color: var(--text-muted); font-size: 0.92rem; }
+
+    .info-tooltip-container { display: inline-flex; align-items: center; position: relative; margin-left: 6px; cursor: pointer; }
+    .info-icon { color: var(--accent-gold); width: 16px; height: 16px; transition: transform 0.2s; }
+    .info-tooltip-container:hover .info-icon { transform: scale(1.15); }
+    .tooltip-box { visibility: hidden; width: 240px; background-color: var(--accent-ink); color: #fff; text-align: left; border-radius: 8px; padding: 10px 12px; position: absolute; z-index: 10; bottom: 125%; left: 50%; margin-left: -120px; opacity: 0; transition: opacity 0.3s, visibility 0.3s; font-size: 0.8rem; font-weight: 400; line-height: 1.4; }
+    .tooltip-box::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--accent-ink) transparent transparent transparent; }
+    .info-tooltip-container:hover .tooltip-box { visibility: visible; opacity: 1; }
+
+    .btn-example { background: #faf6ee; border: 1px solid var(--border-color); color: var(--accent-burgundy); padding: 6px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-example:hover { background: var(--accent-burgundy); color: #ffffff; border-color: var(--accent-burgundy); }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(42, 36, 33, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+    .modal-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius); max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 25px; position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 18px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+    .modal-title { font-family: 'Playfair Display', Georgia, serif; color: var(--accent-burgundy); font-size: 1.3rem; margin-bottom: 10px; }
+    .modal-body { font-size: 0.92rem; line-height: 1.6; color: #4a433e; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 20px; }
+    .form-group-full { grid-column: span 2; }
+    .field-label { font-weight: 600; font-size: 0.88rem; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; }
+    .input-text, select, textarea { width: 100%; background: #ffffff; border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 8px; color: var(--text-main); font-size: 0.92rem; outline: none; transition: all 0.2s ease; }
+    .input-text:focus, select:focus, textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.12); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .aspect-box { background-color: #faf6ee; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; }
+
+    .btn-add-subtle { background: none; border: none; color: var(--accent-burgundy); font-size: 0.85rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s; }
+    .btn-add-subtle:hover { color: var(--accent-gold); }
+
+    .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .tag-btn { background: #faf8f5; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 20px; font-size: 0.84rem; cursor: pointer; user-select: none; }
+    .tag-btn.active { background: var(--accent-burgundy); color: #ffffff; border-color: var(--accent-burgundy); }
+
+    .genre-chips-container { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; padding-bottom: 4px; margin-bottom: 10px; }
+    .genre-chip { flex-shrink: 0; background: #faf8f5; border: 1px solid var(--border-color); padding: 7px 13px; border-radius: 20px; font-size: 0.84rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .genre-chip.selected { background: var(--accent-burgundy); color: #fff; border-color: var(--accent-burgundy); }
+
+    .controls-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+    .btn { padding: 11px 24px; border-radius: 8px; font-weight: 600; font-size: 0.92rem; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+    .btn-primary { background: var(--accent-burgundy); color: #ffffff; }
+    .btn-primary:hover { background: #542229; }
+    .btn-secondary { background: #ffffff; color: var(--text-muted); border: 1px solid var(--border-color); }
+    .btn-secondary:hover { color: var(--text-main); background: #faf8f5; }
+    .btn-icon-beige { background: #faf6ee; border: 1px solid var(--border-color); color: var(--accent-burgundy); padding: 11px 15px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+
+    /* SECCIÓ D'ACCIÓ */
+    .action-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .action-buttons-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* BOTÓ PETIT DE SOFTCATALÀ SITUAT A SOTA */
+    .btn-softcatala-small {
+      background: #faf6ee;
+      border: 1px solid var(--border-color);
+      color: #005696;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      font-size: 0.78rem;
+      transition: all 0.2s ease;
+    }
+    .btn-softcatala-small:hover {
+      background: #005696;
+      color: #ffffff;
+      border-color: #005696;
+    }
+
+    .loading-screen { display: none; text-align: center; padding: 60px 20px; }
+    .loading-pulse-ring { width: 56px; height: 56px; border-radius: 50%; background: var(--accent-burgundy); animation: pulseRing 1.5s infinite; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .loading-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: var(--accent-burgundy); margin-bottom: 8px; }
+    .loading-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+    .result-document { background: #ffffff; border: 1px solid var(--border-color); padding: 40px; border-radius: 8px; }
+    .doc-header { text-align: center; border-bottom: 2px solid var(--accent-gold); padding-bottom: 18px; margin-bottom: 30px; }
+    .doc-genre { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-gold); font-weight: 700; }
+    .doc-title { font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; color: var(--accent-burgundy); margin: 6px 0; }
+    .doc-section { margin-bottom: 28px; }
+    .doc-section-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: var(--accent-ink); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+    .doc-paragraph { font-size: 0.96rem; line-height: 1.75; color: #38322e; text-align: justify; margin-bottom: 12px; }
+
+    .character-entry-clean { background: #faf8f5; border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; margin-bottom: 14px; }
+
+    .footer-left-tr { margin-top: 25px; text-align: left; font-size: 0.78rem; color: var(--text-muted); }
+    .footer-tr-link { color: var(--text-muted); text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .footer-tr-link:hover { color: var(--accent-burgundy); text-decoration: underline; }
+
+    .tr-content-box { display: none; text-align: left; background: #faf8f5; border: 1px solid var(--border-color); padding: 18px; border-radius: 8px; margin-top: 10px; }
+    .tr-content-box h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--accent-ink); font-size: 1.05rem; margin-bottom: 6px; }
+    .tr-content-box ul { padding-left: 18px; font-size: 0.85rem; line-height: 1.5; color: #4a433e; }
+
+    .toast-notification {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: var(--accent-burgundy);
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 2000;
+      pointer-events: none;
+    }
+    .toast-notification.show { opacity: 1; transform: translateY(0); }
+
+    .ai-disclaimer { position: fixed; bottom: 12px; left: 16px; font-size: 0.73rem; color: var(--text-muted); background: rgba(255, 255, 255, 0.92); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 999; pointer-events: none; }
+
+    @media print {
+      body { background: none; padding: 0; }
+      header, .btn-top-home, .progress-container, .controls-bar, .action-container, .footer-left-tr, .ai-disclaimer, .step-header, .btn, .toast-notification { display: none !important; }
+      .app-card { border: none; box-shadow: none; padding: 0; width: 100%; max-width: 100%; }
+      .result-document { border: none; padding: 0; }
+    }
+
+    @keyframes pulseRing { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 45, 53, 0.4); } 70% { transform: scale(1); box-shadow: 0 0 0 16px rgba(107, 45, 53, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(107, 45, 53, 0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group-full { grid-column: span 1; }
+      .app-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand-title-box">
+      <h1 class="brand-title">Generador d'obres d'èxit</h1>
+      <div class="brand-subtitle">Arnau Ramírez</div>
+    </div>
+    <div class="header-actions">
+      <div class="lang-selector-header">
+        <button class="lang-btn-h active" id="btnLangCa" onclick="setLanguage('ca')">CAT</button>
+        <button class="lang-btn-h" id="btnLangEs" onclick="setLanguage('es')">ESP</button>
+      </div>
+      <button class="btn-top-home" onclick="anarAInici()"><i data-lucide="home" style="width:14px; height:14px;"></i> <span id="lblIniciTop">Inici</span></button>
+    </div>
+  </header>
+
+  <main class="app-card">
+
+    <!-- HERO -->
+    <div class="step-panel active" id="step0">
+      <div class="hero-card">
+        <span class="hero-badge">Treball de Recerca 2026</span>
+        <h2 class="hero-title" id="heroTitle">Crea la teva obra narrativa amb estructura d'èxit garantida</h2>
+        <p class="hero-desc" id="heroDesc">
+          Aquest generador ha estat creat des de zero per l'alumne Arnau Ramírez en el marc del seu Treball de Recerca. Amb l'assistència de la IA en la navegació i l'estructuració, la plataforma et guiarà pas a pas per convertir una simple idea en una anàlisi narrativa completa i d'alta qualitat.
+        </p>
+        <button class="btn btn-primary" style="font-size:1.02rem; padding:14px 36px;" onclick="comencarGenerador()">
+          <span id="btnStartText">Començar la creació</span> <i data-lucide="arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-container" id="progressArea" style="display:none;">
+      <div class="progress-header">
+        <span id="stepCounter">Secció 1 de 5</span>
+        <span id="stepPercent">20% completat</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- SECCIÓ 1 -->
+    <div class="step-panel" id="step1">
+      <div class="step-header">
+        <div>
+          <div class="step-title"><i data-lucide="book-open"></i> <span id="s1Title">1. Idea i Context</span></div>
+          <p class="step-desc" id="s1Desc">Tria l'ambientació i el tipus de context per establir les bases de la teva obra.</p>
+        </div>
+        <button class="btn-example" onclick="openModal('modal1')"><i data-lucide="eye"></i> <span class="lblExample">Exemple de referència</span></button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group-full">
+          <label class="field-label">
+            <span id="lbl1_1">1.1 Concepte o Idea Principal de la Història:</span>
+            <span class="info-tooltip-container">
+              <i data-lucide="info" class="info-icon"></i>
+              <span class="tooltip-box" id="tt1_1">Com més desenvolupada sigui la teva idea inicial, més precís i complet serà el resultat generat per la IA.</span>
+            </span>
+          </label>
+          <textarea class="input-text" id="ideaText" placeholder="Explica la premissa, els personatges o el conflicte d'inici..."></textarea>
+        </div>
+
+        <div>
+          <label class="field-label" id="lbl1_2">1.2 Època:</label>
+          <input type="text" class="input-text" id="epocaInput" placeholder="Ex: Actualitat, Postguerra, Segle XIX...">
+        </div>
+
+        <div>
+          <label class="field-label" id="lbl1_3">1.3 Lloc / Escenari:</label>
+          <input type="text" class="input-text" id="llocInput" placeholder="Ex: Institut de Batxillerat, Masia rural, París...">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl1_4">1.4 Context:</label>
+          <div class="tags-container" id="contextTags">
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagHist">Històric</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagSoc">Social</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagCult">Cultural</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagPol">Polític</span>
+          </div>
+          <input type="text" class="input-text" id="ctxCustom" placeholder="Altra opció de context personalitzada...">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl1_5">1.5 Elements de Realitat i Ficció:</label>
+          <div class="form-grid" style="margin-bottom:0;">
+            <input type="text" class="input-text" id="realitatInput" placeholder="Elements de la Realitat (Ex: Bullying, pressió social)">
+            <input type="text" class="input-text" id="ficcioInput" placeholder="Elements de Ficció (Ex: Converses anònimes)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓ 2 -->
+    <div class="step-panel" id="step2">
+      <div class="step-header">
+        <div>
+          <div class="step-title"><i data-lucide="users"></i> <span id="s2Title">2. Estudi dels Personatges</span></div>
+          <p class="step-desc" id="s2Desc">Dissenya la psicologia i motivació del protagonista, antagonista i secundaris.</p>
+        </div>
+        <button class="btn-example" onclick="openModal('modal2')"><i data-lucide="eye"></i> <span class="lblExample">Exemple de referència</span></button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group-full" style="border-bottom: 2px solid var(--accent-gold); padding-bottom: 18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="field-label" style="color:var(--accent-burgundy); font-size:1.05rem; font-family:'Playfair Display', serif; margin:0;" id="titleProta1">ESTUDI DEL PROTAGONISTA</span>
+            <button class="btn-add-subtle" onclick="afegirSegonProtagonista()">
+              <i data-lucide="plus" style="width:16px; height:16px;"></i> <span id="lblAddProta2">Afegir un altre protagonista</span>
+            </button>
+          </div>
+          
+          <div class="form-grid" style="margin-top:10px; margin-bottom:10px;">
+            <div>
+              <label class="field-label" id="lblP1Nom">Nom del Protagonista:</label>
+              <input type="text" class="input-text" id="protaNom" placeholder="Ex: Héctor">
+              
+              <label class="field-label" style="margin-top:8px;" id="lblP1Obj">Objectiu Central:</label>
+              <input type="text" class="input-text" id="protaObjectiu" placeholder="Ex: Protegir la seva imatge i encaixar">
+
+              <div class="form-grid" style="margin-top:8px; margin-bottom:0;">
+                <div>
+                  <label class="field-label" id="lblP1Vir">Virtut:</label>
+                  <input type="text" class="input-text" id="protaVirtut" placeholder="Ex: Sensibilitat en privat">
+                </div>
+                <div>
+                  <label class="field-label" id="lblP1Def">Defecte:</label>
+                  <input type="text" class="input-text" id="protaDefecte" placeholder="Ex: Por al rebuig">
+                </div>
+              </div>
+            </div>
+
+            <div class="aspect-box">
+              <label class="field-label" style="color:var(--accent-burgundy); font-size:0.82rem;" id="lblP1Asp">
+                Aspecte Físic / Descripció Visual
+                <span class="info-tooltip-container">
+                  <i data-lucide="info" class="info-icon"></i>
+                  <span class="tooltip-box" id="ttP1Asp">Descripció per detallar els trets físics del personatge.</span>
+                </span>
+              </label>
+              <textarea class="input-text" id="protaAspecte" style="height:115px; font-size:0.88rem;" placeholder="Ex: Noi jove de 17 anys, cabells foscos curts, ulls expressius..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom:0;">
+            <div>
+              <label class="field-label" id="lblP1ArcIni">Evolució Inicial:</label>
+              <input type="text" class="input-text" id="arcInici" placeholder="Ex: Ocultació, negació i por">
+            </div>
+            <div>
+              <label class="field-label" id="lblP1ArcFin">Evolució Final:</label>
+              <input type="text" class="input-text" id="arcFinal" placeholder="Ex: Acceptació i assumir la veritat">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group-full" id="prota2Area" style="display:none; border-bottom: 2px dashed var(--accent-gold); padding-bottom: 18px;">
+          <span class="field-label" style="color:var(--accent-burgundy); font-size:1rem; font-family:'Playfair Display', serif;" id="titleProta2">ESTUDI DEL SEGON PROTAGONISTA</span>
+          <div class="form-grid" style="margin-top:10px; margin-bottom:0;">
+            <div>
+              <input type="text" class="input-text" id="prota2Nom" placeholder="Nom del Segon Protagonista (Ex: Bárbara)" style="margin-bottom:8px;">
+              <input type="text" class="input-text" id="prota2Objectiu" placeholder="Objectiu Central" style="margin-bottom:8px;">
+              <div class="form-grid" style="margin-bottom:8px;">
+                <input type="text" class="input-text" id="prota2Virtut" placeholder="Virtut">
+                <input type="text" class="input-text" id="prota2Defecte" placeholder="Defecte">
+              </div>
+              <input type="text" class="input-text" id="prota2Evolucio" placeholder="Evolució General del personatge">
+            </div>
+            <div class="aspect-box">
+              <label class="field-label" style="color:var(--accent-burgundy); font-size:0.82rem;">Aspecte Físic / Descripció Visual</label>
+              <textarea class="input-text" id="prota2Aspecte" style="height:115px; font-size:0.88rem;" placeholder="Ex: Noia jove de 17 anys, cabells castanys, mirada serena..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="field-label" style="color:var(--accent-ink); font-size:0.88rem;" id="lblAntaTitle">ANTAGONISTA / OPOSITOR</span>
+          <input type="text" class="input-text" id="antaNom" placeholder="Nom (Ex: Persona tòxica / Sergi)" style="margin-bottom:6px;">
+          <input type="text" class="input-text" id="antaMotivacio" placeholder="Motivació / Oposició principal" style="margin-bottom:6px;">
+          <input type="text" class="input-text" id="antaAspecte" placeholder="Descripció física breu (Ex: Noi alt, cabells bruns, actitud dominant)">
+        </div>
+
+        <div>
+          <span class="field-label" style="color:var(--accent-ink); font-size:0.88rem;" id="lblSecTitle">PERSONATGE SECUNDARI CLAU</span>
+          <input type="text" class="input-text" id="secNom" placeholder="Nom (Ex: Martí)" style="margin-bottom:6px;">
+          <input type="text" class="input-text" id="secRol" placeholder="Rol a la trama" style="margin-bottom:6px;">
+          <input type="text" class="input-text" id="secAspecte" placeholder="Descripció física breu (Ex: Noi prim, ulleres, estil senzill)">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓ 3 -->
+    <div class="step-panel" id="step3">
+      <div class="step-header">
+        <div>
+          <div class="step-title"><i data-lucide="swords"></i> <span id="s3Title">3. Conflicte i Temes Universals</span></div>
+          <p class="step-desc" id="s3Desc">Selecciona les forces opositores i la qüestió moral que es planteja.</p>
+        </div>
+        <button class="btn-example" onclick="openModal('modal3')"><i data-lucide="eye"></i> <span class="lblExample">Exemple de referència</span></button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group-full">
+          <label class="field-label" id="lbl3_1">3.1 Conflicte del Protagonista con:</label>
+          <div class="tags-container" id="conflicteTags">
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagPersona">Persona</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagFam">Família</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagSocEnt">Societat / Entorn</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagInst">Institució</span>
+            <span class="tag-btn" onclick="toggleTag(this)" id="tagSelf">Ell/a mateix/a</span>
+          </div>
+          <input type="text" class="input-text" id="cnfCustom" placeholder="Altra opció de conflicte personalitzada...">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl3_2">3.2 Què li impedeix aconseguir el seu objectiu?:</label>
+          <textarea class="input-text" id="impedimentInput" placeholder="Ex: La por a les conseqüències socials i la manipulació..."></textarea>
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl3_3">3.3 Temes Principals:</label>
+          <div class="tags-container" id="temesTags">
+            <span class="tag-btn" onclick="toggleTag(this)">Amor</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Identitat</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Injustícia</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Llibertat</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Poder</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Família</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Ambició</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Desigualtat</span>
+          </div>
+          <input type="text" class="input-text" id="temesCustom" placeholder="Altres temes addicionals...">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl3_4">3.4 Pregunta Universal de Fons que planteja:</label>
+          <input type="text" class="input-text" id="preguntaInput" placeholder="Ex: Fins a quin punt la por al rebuig justifica el mal causat als altres?">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓ 4 -->
+    <div class="step-panel" id="step4">
+      <div class="step-header">
+        <div>
+          <div class="step-title"><i data-lucide="sparkles"></i> <span id="s4Title">4. Connexió Emocional i Clímax</span></div>
+          <p class="step-desc" id="s4Desc">Mecanismes per atrapar el públic, moments clau i capacitat de reinterpretar la història.</p>
+        </div>
+        <button class="btn-example" onclick="openModal('modal4')"><i data-lucide="eye"></i> <span class="lblExample">Exemple de referència</span></button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group-full">
+          <label class="field-label" id="lbl4_1">4.1 Connexió Emocional - Vull que la gent senti:</label>
+          <div class="tags-container" id="emocionsTags">
+            <span class="tag-btn" onclick="toggleTag(this)">Empatia</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Curiositat</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Tensió</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Tristesa</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Alegria</span>
+            <span class="tag-btn" onclick="toggleTag(this)">Esperança</span>
+          </div>
+          <input type="text" class="input-text" id="emocionsCustom" placeholder="Altra emoció personalitzada...">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl4_2">4.2 Quin moment emocional destacarà principalment?:</label>
+          <input type="text" class="input-text" id="momentEmocional" placeholder="Ex: La confrontació cara a cara quan es descobreix la veritat...">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl4_3">4.3 Quin moment inesperat (gir dramàtic) mantindrà l'interès?:</label>
+          <textarea class="input-text" id="girInesperat" placeholder="Ex: Descobrir la veritat oculta rere les intencions dels personatges..."></textarea>
+        </div>
+
+        <div>
+          <label class="field-label" id="lbl4_4">4.4 Què espera inicialment el públic?:</label>
+          <input type="text" class="input-text" id="expectativaPublic" placeholder="Ex: Que el protagonista mantingui la seva relació sense canvis">
+        </div>
+
+        <div>
+          <label class="field-label" id="lbl4_5">4.5 Què passarà realment?:</label>
+          <input type="text" class="input-text" id="realitatPublic" placeholder="Ex: Es trencen els prejudicis i s'afronten les conseqüències">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lbl4_6">4.6 Element que permet reinterpretar la història en altres èpoques:</label>
+          <input type="text" class="input-text" id="atemporalitatInput" placeholder="Ex: La necessitat d'alliberar-se d'un entorn tòxic i trobar l'amor veritable">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓ 5 -->
+    <div class="step-panel" id="step5">
+      <div class="step-header">
+        <div>
+          <div class="step-title"><i data-lucide="check-circle"></i> <span id="s5Title">5. Títol i Gènere de la teva Obra</span></div>
+          <p class="step-desc" id="s5Desc">Defineix el títol final i selecciona el gènere suggerit automàticament per la IA segons la teva trama.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group-full">
+          <label class="field-label">
+            <span id="lblTitleFinal">Títol Definitiu de l'Obra:</span>
+            <button class="btn-example" style="margin-left:auto; font-size:0.78rem;" onclick="generarExempleTitolIteratiu()">
+              <i data-lucide="wand-2"></i> <span id="lblGenTitleBtn">Generar exemple de títol</span>
+            </button>
+          </label>
+          <input type="text" class="input-text" id="titolInput" placeholder="Ex: Deixar-ho enrere">
+        </div>
+
+        <div class="form-group-full">
+          <label class="field-label" id="lblGenreFinal">Gènere de la teva obra:</label>
+          <div class="genre-chips-container" id="genreChipsArea">
+            <!-- Generat dinàmicament -->
+          </div>
+          <input type="text" class="input-text" id="genereCustom" placeholder="O escriu tu mateix el gènere...">
+        </div>
+
+        <div class="form-group-full" style="text-align: center; margin-top: 25px;">
+          <button class="btn btn-primary" style="font-size: 1.05rem; padding: 15px 36px;" onclick="executarGeneracioIA()">
+            <i data-lucide="sparkles"></i> <span id="btnGenFinalText">Generar Anàlisi Completa de l'Obra</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANTALLA DE CÀRREGA -->
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-pulse-ring">
+        <i data-lucide="sparkles" style="width:30px; height:30px;"></i>
+      </div>
+      <div class="loading-title" id="loadingTitle">Generant la teva obra...</div>
+      <div class="loading-desc" id="loadingDesc">La IA està estructurant l'anàlisi completa i la sinopsi argumental.</div>
+    </div>
+
+    <!-- RESULTAT FINAL -->
+    <div class="step-panel" id="stepResult">
+      <div class="step-header">
+        <div>
+          <div class="step-title"><i data-lucide="file-text"></i> <span id="lblDocHeaderTitle">Anàlisi Completa de l'Obra</span></div>
+          <p class="step-desc" id="lblDocHeaderDesc">Estructura formal desenvolupada segons el mètode del Treball de Recerca.</p>
+        </div>
+        <button class="btn btn-secondary" style="font-size:0.85rem;" onclick="tornarAEditar()">
+          <i data-lucide="edit-3"></i> <span id="lblEditBtn">Tornar a editar</span>
+        </button>
+      </div>
+
+      <div class="result-document" id="resultDoc">
+        <!-- Generat automàticament per JS -->
+      </div>
+
+      <!-- ESTRUCTURA D'ACCIÓ CONSERVANT ELS BOTONS PRINCIPALS I EL BOTÓ PETIT A SOTA -->
+      <div class="action-container">
+        <div class="action-buttons-group">
+          <button class="btn btn-primary" onclick="imprimirOguardarPDF()"><i data-lucide="printer"></i> <span id="lblPrintBtn">Imprimir / Guardar en PDF</span></button>
+          <button class="btn btn-icon-beige" title="Copiar text complet" onclick="copiarAnalisi()"><i data-lucide="copy"></i></button>
+        </div>
+        
+        <!-- BOTÓ PETIT DE SOFTCATALÀ -->
+        <button class="btn-softcatala-small" title="Corregir a Softcatalà" onclick="corregirASoftcatala()">
+          <i data-lucide="external-link" style="width:13px; height:13px;"></i> Corregir
+        </button>
+      </div>
+
+      <div class="footer-left-tr">
+        <span class="footer-tr-link" onclick="toggleTRContent()">
+          <i data-lucide="info" style="width:14px; height:14px;"></i> <span id="lblFooterLink">Aquesta obra s'ha construït utilitzant els factors del Treball de Recerca de l'alumne Arnau Ramírez (2026)</span>
+        </span>
+        <div class="tr-content-box" id="trContentBox">
+          <h4 id="lblTRBoxTitle">Resum de la Part Pràctica del TR (Arnau Ramírez)</h4>
+          <p style="font-size:0.88rem; line-height:1.5; color:#4a433e; margin-bottom:8px;" id="lblTRBoxDesc">
+            Aquesta eina aplica les conclusions extretes de l'anàlisi comparativa dels clàssics universals:
+          </p>
+          <ul id="lblTRBoxList">
+            <li><strong>1. Conflicte Intern:</strong> Dilema moral o identitari en el protagonista.</li>
+            <li><strong>2. Conflicte amb l'Entorn:</strong> Xoc contra la societat, normes o pressió de grup.</li>
+            <li><strong>3. Evolució de Personatge:</strong> Arc de transformació coherent de l'inici al final.</li>
+            <li><strong>4. Realitat i Ficció:</strong> Integració de problemàtiques reals en un relat fictici.</li>
+            <li><strong>5. Temes Universals:</strong> Qüestions morals transcendents (amor, identitat, injustícia).</li>
+            <li><strong>6. Connexió Emocional i Gir:</strong> Punt d'inflexió que sorprèn i manté l'interès.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls-bar" id="controlsBar" style="display:none;">
+      <button class="btn btn-secondary" id="btnPrev" onclick="changeStep(-1)"><i data-lucide="chevron-left"></i> <span id="lblPrev">Anterior</span></button>
+      <button class="btn btn-primary" id="btnNext" onclick="changeStep(1)"><span id="lblNext">Següent</span> <i data-lucide="chevron-right"></i></button>
+    </div>
+
+  </main>
+
+  <!-- MODALS INFORMATIUS I EXEMPLES -->
+  <div class="modal-overlay" id="modal1">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('modal1')">&times;</button>
+      <div class="modal-title" id="m1Title">Exemple de Referència: Idea i Context</div>
+      <div class="modal-body" id="m1Body">
+        <p><strong>Idea Principal:</strong> La ruptura d'una amistat d'infància per un malentès i el seu retrobament anys després, o la historia d'un jove que s'allibera d'una relació tòxica per trobar un nou amor.</p>
+        <p style="margin-top:8px;"><strong>Context:</strong> Social, escolar i de pressió del grup d'amics durant l'adolescència.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal2">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('modal2')">&times;</button>
+      <div class="modal-title" id="m2Title">Exemple de Referència: Personatges</div>
+      <div class="modal-body" id="m2Body">
+        <p><strong>Protagonista:</strong> Un jove que viu dividit entre la necessitat de complir les expectatives de la seva parella o entorn i el seu desig real de llibertat.</p>
+        <p style="margin-top:8px;"><strong>Antagonista / Opositor:</strong> La persona tòxica o entorn que exerceix manipulació emocional.</p>
+        <p style="margin-top:8px;"><strong>Arc d'Evolució:</strong> Passa de la dependència i el silenci a l'autoacceptació i la presa de decisions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal3">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('modal3')">&times;</button>
+      <div class="modal-title" id="m3Title">Exemple de Referència: Conflicte i Temes</div>
+      <div class="modal-body" id="m3Body">
+        <p><strong>Conflicte:</strong> Contradicció entre el compromís o dependència del passat i la recerca d'una vida autèntica.</p>
+        <p style="margin-top:8px;"><strong>Temes:</strong> Amor, llibertat, identitat, toxicitat i creixement personal.</p>
+        <p style="margin-top:8px;"><strong>Pregunta Universal:</strong> Fins a quin punt estem disposats a renunciar a nosaltres mateixos per por a la solitud o al rebuig?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal4">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal('modal4')">&times;</button>
+      <div class="modal-title" id="m4Title">Exemple de Referència: Connexió Emocional</div>
+      <div class="modal-body" id="m4Body">
+        <p><strong>Moment Emocional:</strong> La conversa decisiva on es trencen les lligadures del passat i es reconeixen els veritables sentiments.</p>
+        <p style="margin-top:8px;"><strong>Gir Inesperat:</strong> Un descobriment que revela les manipulacions prèvies i impulsa el protagonista a actuar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL D'AVÍS CENTRAL DE SOFTCATALÀ -->
+  <div class="modal-overlay" id="modalSoftcatala">
+    <div class="modal-card" style="max-width: 460px; text-align: center; padding: 30px 25px;">
+      <button class="modal-close" onclick="tancarIAnarASoftcatala()">&times;</button>
+      <div style="width: 50px; height: 50px; background: #eaf2f8; color: #005696; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto;">
+        <i data-lucide="check-circle-2" style="width: 28px; height: 28px;"></i>
+      </div>
+      <div class="modal-title" style="color: #005696; font-size: 1.4rem;">Text Copiat amb Èxit</div>
+      <div class="modal-body" style="font-size: 0.95rem; margin-bottom: 22px;">
+        S'ha copiat tot el text de l'anàlisi al teu porta-retalls.<br>
+        Ara s'obrirà el corrector de <strong>Softcatalà</strong> i només has de fer <strong>Ctrl + V</strong> (o <strong>Cmd + V</strong>) per enganxar-lo.
+      </div>
+      <button class="btn btn-primary" style="background: #005696; width: 100%; justify-content: center;" onclick="tancarIAnarASoftcatala()">
+        Anar a Softcatalà <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="toast-notification" id="toastBox">
+    <i data-lucide="check-circle" style="width:18px; height:18px;"></i>
+    <span id="toastMsg">Text de l'anàlisi copiat al porta-retalls amb èxit!</span>
+  </div>
+
+  <div class="ai-disclaimer">
+    Este programa utiliza IA para la estructura i organización per no para la ideación de la obra
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let currentStep = 0;
+    const totalSteps = 5;
+    let selectedGenreChip = "";
+    let teSegonProta = false;
+    let currentLang = 'ca';
+
+    function netejarArticlesNom(nom) {
+      if (!nom) return "";
+      return nom.trim().replace(/^(el|la|l'|en|na|los|las|un|una)\s+/i, "");
+    }
+
+    function depurarTextoIA(text) {
+      if (!text) return "";
+      let t = text.trim();
+
+      t = t.replace(/\bi\b/g, 'i')
+           .replace(/\bamb\b/g, 'amb')
+           .replace(/\bperque\b/gi, 'perquè')
+           .replace(/\bporq\b/gi, 'porque')
+           .replace(/\bke\b/gi, 'que')
+           .replace(/\bambit\b/gi, 'àmbit')
+           .replace(/\blloc\b/gi, 'lloc');
+
+      t = t.charAt(0).toLowerCase() + t.slice(1);
+      if (t.endsWith('.')) t = t.slice(0, -1);
+      return t;
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('btnLangCa').classList.toggle('active', lang === 'ca');
+      document.getElementById('btnLangEs').classList.toggle('active', lang === 'es');
+
+      if (lang === 'es') {
+        document.getElementById('lblIniciTop').innerText = "Inicio";
+        document.getElementById('heroTitle').innerText = "Crea tu obra narrativa con estructura de éxito garantizada";
+        document.getElementById('heroDesc').innerText = "Este generador ha sido creado desde cero por el alumno Arnau Ramírez en el marco de su Trabajo de Investigación. Con la asistencia de la IA en la navegación y estructuración, la plataforma te guiará paso a paso para convertir una idea en un análisis narrativo completo.";
+        document.getElementById('btnStartText').innerText = "Comenzar la creación";
+        
+        document.getElementById('s1Title').innerText = "1. Idea y Contexto";
+        document.getElementById('s1Desc').innerText = "Elige la ambientación y el tipo de contexto para establecer las bases de tu obra.";
+        document.getElementById('lbl1_1').innerText = "1.1 Concepto o Idea Principal de la Historia:";
+        document.getElementById('tt1_1').innerText = "Cuanto más desarrollada esté tu idea inicial, más preciso y completo será el resultado de la IA.";
+        document.getElementById('lbl1_2').innerText = "1.2 Época:";
+        document.getElementById('lbl1_3').innerText = "1.3 Lugar / Escenario:";
+        document.getElementById('lbl1_4').innerText = "1.4 Contexto:";
+        document.getElementById('lbl1_5').innerText = "1.5 Elementos de Realidad y Ficción:";
+        
+        document.getElementById('tagHist').innerText = "Histórico";
+        document.getElementById('tagSoc').innerText = "Social";
+        document.getElementById('tagCult').innerText = "Cultural";
+        document.getElementById('tagPol').innerText = "Político";
+
+        document.getElementById('s2Title').innerText = "2. Estudio de los Personajes";
+        document.getElementById('s2Desc').innerText = "Diseña la psicología y motivación del personaje principal, antagonista y secundarios.";
+        document.getElementById('titleProta1').innerText = "ESTUDIO DEL PROTAGONISTA";
+        document.getElementById('lblAddProta2').innerText = "Añadir otro protagonista";
+        document.getElementById('lblP1Nom').innerText = "Nombre del Protagonista:";
+        document.getElementById('lblP1Obj').innerText = "Objetivo Central:";
+        document.getElementById('lblP1Vir').innerText = "Virtud:";
+        document.getElementById('lblP1Def').innerText = "Defecto:";
+        document.getElementById('lblP1Asp').innerText = "Aspecto Físico / Descripción Visual";
+        document.getElementById('ttP1Asp').innerText = "Descripción para detallar los rasgos físicos del personaje.";
+        document.getElementById('lblP1ArcIni').innerText = "Evolución Inicial:";
+        document.getElementById('lblP1ArcFin').innerText = "Evolución Final:";
+        document.getElementById('lblAntaTitle').innerText = "ANTAGONISTA / OPOSITOR";
+        document.getElementById('lblSecTitle').innerText = "PERSONAJE SECUNDARIO CLAVE";
+        
+        document.getElementById('s3Title').innerText = "3. Conflicto y Temas Universales";
+        document.getElementById('s3Desc').innerText = "Selecciona las fuerzas opositoras y la cuestión moral planteada.";
+        document.getElementById('lbl3_1').innerText = "3.1 Conflicto del Protagonista con:";
+        document.getElementById('tagPersona').innerText = "Persona";
+        document.getElementById('tagFam').innerText = "Familia";
+        document.getElementById('tagSocEnt').innerText = "Sociedad / Entorno";
+        document.getElementById('tagInst').innerText = "Institución";
+        document.getElementById('tagSelf').innerText = "Él/Ella mismo/a";
+        document.getElementById('lbl3_2').innerText = "3.2 ¿Qué le impide conseguir su objetivo?:";
+        document.getElementById('lbl3_3').innerText = "3.3 Temas Principales:";
+        document.getElementById('lbl3_4').innerText = "3.4 Pregunta Universal de Fondo que plantea:";
+
+        document.getElementById('s4Title').innerText = "4. Conexión Emocional y Clímax";
+        document.getElementById('s4Desc').innerText = "Mecanismos para atrapar al público y momentos clave.";
+        document.getElementById('lbl4_1').innerText = "4.1 Conexión Emocional - Quiero que la gente sienta:";
+        document.getElementById('lbl4_2').innerText = "4.2 ¿Qué momento emocional destacará principalmente?:";
+        document.getElementById('lbl4_3').innerText = "4.3 ¿Qué momento inesperado (giro dramático) mantendrá el interés?:";
+        document.getElementById('lbl4_4').innerText = "4.4 ¿Qué espera inicialmente el público?:";
+        document.getElementById('lbl4_5').innerText = "4.5 ¿Qué pasará realmente?:";
+        document.getElementById('lbl4_6').innerText = "4.6 Elemento que permite reinterpretar la historia en otras épocas:";
+
+        document.getElementById('s5Title').innerText = "5. Título y Género de tu Obra";
+        document.getElementById('s5Desc').innerText = "Define el título final y selecciona el género sugerido automáticamente.";
+        document.getElementById('lblTitleFinal').innerText = "Título Definitivo de la Obra:";
+        document.getElementById('lblGenTitleBtn').innerText = "Generar ejemplo de título";
+        document.getElementById('lblGenreFinal').innerText = "Género de tu obra:";
+        document.getElementById('btnGenFinalText').innerText = "Generar Análisis Completo de la Obra";
+        
+        document.getElementById('loadingTitle').innerText = "Generando tu obra...";
+        document.getElementById('loadingDesc').innerText = "La IA está estructurando el análisis completo y la sinopsis.";
+        
+        document.getElementById('lblDocHeaderTitle').innerText = "Análisis Completo de la Obra";
+        document.getElementById('lblDocHeaderDesc').innerText = "Estructura formal desarrollada según el método del Trabajo de Investigación.";
+        document.getElementById('lblEditBtn').innerText = "Volver a editar";
+        document.getElementById('lblPrintBtn').innerText = "Imprimir / Guardar en PDF";
+        document.getElementById('lblFooterLink').innerText = "Esta obra se ha construido utilizando los factores del Trabajo de Investigación del alumno Arnau Ramírez (2026)";
+        document.getElementById('lblTRBoxTitle').innerText = "Resumen de la Parte Práctica del TR (Arnau Ramírez)";
+        document.getElementById('lblTRBoxDesc').innerText = "Esta herramienta aplica las conclusiones extraídas del análisis comparativo de los clásicos universales:";
+        
+        document.querySelectorAll('.lblExample').forEach(e => e.innerText = "Ejemplo de referencia");
+        document.getElementById('lblPrev').innerText = "Anterior";
+        document.getElementById('lblNext').innerText = "Siguiente";
+      } else {
+        location.reload();
+      }
+    }
+
+    function anarAInici() {
+      document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+      document.getElementById('step0').classList.add('active');
+      document.getElementById('progressArea').style.display = 'none';
+      document.getElementById('controlsBar').style.display = 'none';
+      currentStep = 0;
+    }
+
+    function comencarGenerador() {
+      document.getElementById('step0').classList.remove('active');
+      document.getElementById('progressArea').style.display = 'block';
+      document.getElementById('controlsBar').style.display = 'flex';
+      currentStep = 1;
+      updateUI();
+    }
+
+    function toggleTag(element) {
+      element.classList.toggle('active');
+    }
+
+    function selectGenreChip(element) {
+      document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedGenreChip = element.innerText;
+    }
+
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function afegirSegonProtagonista() {
+      teSegonProta = true;
+      document.getElementById('prota2Area').style.display = 'block';
+    }
+
+    function processarExtraccioInvisibles() {
+      const text = document.getElementById('ideaText').value;
+      if (!text) return;
+
+      const noms = text.match(/([A-Z][a-zàéèíòóúçñáéíóú]+)/g);
+      if (noms && noms.length > 0) {
+        if (!document.getElementById('protaNom').value) {
+          document.getElementById('protaNom').value = netejarArticlesNom(noms[0]);
+        }
+        if (noms.length > 1 && !document.getElementById('antaNom').value) {
+          document.getElementById('antaNom').value = netejarArticlesNom(noms[1]);
+        }
+      }
+
+      if (!document.getElementById('llocInput').value) {
+        if (text.toLowerCase().includes('institut')) document.getElementById('llocInput').value = currentLang === 'es' ? "un instituto" : "un institut de batxillerat";
+        else if (text.toLowerCase().includes('universitat')) document.getElementById('llocInput').value = currentLang === 'es' ? "la universidad" : "la universitat";
+      }
+    }
+
+    function changeStep(direction) {
+      processarExtraccioInvisibles();
+
+      if (direction === 1 && currentStep < totalSteps) {
+        currentStep++;
+      } else if (direction === -1 && currentStep > 1) {
+        currentStep--;
+      }
+
+      if (currentStep === 5) {
+        generarSuggerimentsGenereIA();
+      }
+
+      updateUI();
+    }
+
+    function updateUI() {
+      document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+      document.getElementById(`step${currentStep}`).classList.add('active');
+
+      const percent = (currentStep / totalSteps) * 100;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+      document.getElementById('stepCounter').innerText = currentLang === 'es' ? `Sección ${currentStep} de ${totalSteps}` : `Secció ${currentStep} de ${totalSteps}`;
+      document.getElementById('stepPercent').innerText = `${percent}% ${currentLang === 'es' ? 'completado' : 'completat'}`;
+
+      document.getElementById('btnPrev').style.visibility = currentStep <= 1 ? 'hidden' : 'visible';
+
+      if (currentStep === totalSteps) {
+        document.getElementById('btnNext').style.display = 'none';
+      } else {
+        document.getElementById('btnNext').style.display = 'inline-flex';
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lucide.createIcons();
+    }
+
+    function generarSuggerimentsGenereIA() {
+      const idea = document.getElementById('ideaText').value.toLowerCase();
+      const area = document.getElementById('genreChipsArea');
+      let generes = [];
+
+      if (idea.includes('amor') || idea.includes('enamora') || idea.includes('parella') || idea.includes('tòxic') || idea.includes('toxica')) {
+        generes = currentLang === 'es' 
+          ? ["Drama Sentimental", "Romance Contemporáneo", "Drama de Superación", "Comedia Romántica", "Ficción Social"]
+          : ["Drama Sentimental", "Romanç Contemporani", "Drama de Superació", "Comèdia Romàntica", "Ficció Social"];
+      } else if (idea.includes('assass') || idea.includes('morts') || idea.includes('crim') || idea.includes('misteri')) {
+        generes = currentLang === 'es'
+          ? ["Thriller Psicológico", "Drama y Misterio", "Suspense Policial", "Ficción Intensa", "Drama Negro"]
+          : ["Thriller Psicològic", "Drama i Misteri", "Suspense Policial", "Ficció Intensa", "Drama Negre"];
+      } else {
+        generes = currentLang === 'es'
+          ? ["Drama Juvenil", "Drama Psicológico", "Ficción Contemporánea", "Drama Social", "Tragedia Moderna"]
+          : ["Drama Juvenil", "Drama Psicològic", "Ficció Contemporània", "Drama Social", "Tragèdia Moderna"];
+      }
+
+      area.innerHTML = generes.map(g => `<div class="genre-chip" onclick="selectGenreChip(this)">${g}</div>`).join('');
+    }
+
+    function generarExempleTitolIteratiu() {
+      const protaRaw = document.getElementById('protaNom').value || "Héctor";
+      const prota = netejarArticlesNom(protaRaw);
+      const idea = document.getElementById('ideaText').value.toLowerCase();
+
+      let titolsExemple = [];
+
+      if (idea.includes('amor') || idea.includes('tòxic') || idea.includes('toxica') || idea.includes('enamora')) {
+        titolsExemple = currentLang === 'es' ? [
+          `Dejarlo atrás`,
+          `Lo que aprendí al amarte`,
+          `La sombra de ${prota}`,
+          `Un nuevo comienzo`,
+          `Más allá de la relación`
+        ] : [
+          `Deixar-ho enrere`,
+          `El que vaig aprendre d'estimar-te`,
+          `L'ombra de ${prota}`,
+          `Un nou començament`,
+          `Més enllà de la relació`
+        ];
+      } else {
+        titolsExemple = currentLang === 'es' ? [
+          `Antes de que descubras la verdad`,
+          `Lo que no nos dijimos`,
+          `El silencio de ${prota}`,
+          `Bajo las apariencias`,
+          `Las palabras pendientes`
+        ] : [
+          `Abans que descobreixis la veritat`,
+          `Allò que no ens vam dir`,
+          `El silenci de ${prota}`,
+          `Sota les aparences`,
+          `Les paraules pendents`
+        ];
+      }
+
+      const elegit = titolsExemple[Math.floor(Math.random() * titolsExemple.length)];
+      document.getElementById('titolInput').value = elegit;
+    }
+
+    function getSelectedTags(containerId) {
+      const tags = [];
+      document.querySelectorAll(`#${containerId} .tag-btn.active`).forEach(tag => {
+        tags.push(tag.innerText);
+      });
+      return tags.join(', ');
+    }
+
+    function executarGeneracioIA() {
+      document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+      document.getElementById('progressArea').style.display = 'none';
+      document.getElementById('controlsBar').style.display = 'none';
+      document.getElementById('loadingScreen').style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('stepResult').classList.add('active');
+        generarDocumentTR();
+      }, 1200);
+    }
+
+    function tornarAEditar() {
+      document.getElementById('stepResult').classList.remove('active');
+      document.getElementById('progressArea').style.display = 'block';
+      document.getElementById('controlsBar').style.display = 'flex';
+      currentStep = 5;
+      updateUI();
+    }
+
+    function toggleTRContent() {
+      const box = document.getElementById('trContentBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function copiarAnalisi() {
+      const text = document.getElementById('resultDoc').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toastBox');
+        document.getElementById('toastMsg').innerText = currentLang === 'es' ? "¡Texto del análisis copiado al portapapeles con éxito!" : "Text de l'anàlisi copiat al porta-retalls amb èxit!";
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      });
+    }
+
+    // OBRE EL MODAL D'AVÍS CENTRAL
+    function corregirASoftcatala() {
+      const text = document.getElementById('resultDoc').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        openModal('modalSoftcatala');
+      });
+    }
+
+    // TANCA EL MODAL I REDIRIGEIX A SOFTCATALÀ
+    function tancarIAnarASoftcatala() {
+      closeModal('modalSoftcatala');
+      window.open("https://www.softcatala.org/corrector/", "_blank");
+    }
+
+    function imprimirOguardarPDF() {
+      window.print();
+    }
+
+    function generarDocumentTR() {
+      const titol = document.getElementById('titolInput').value || (currentLang === 'es' ? "Título de la Obra" : "Títol de l'Obra");
+      const genereCustom = document.getElementById('genereCustom').value;
+      const genere = genereCustom || selectedGenreChip || (currentLang === 'es' ? "Drama Juvenil y Psicológico" : "Drama Juvenil i Psicològic");
+      
+      const ideaRaw = document.getElementById('ideaText').value;
+      const idea = depurarTextoIA(ideaRaw) || (currentLang === 'es' ? "explora las contradicciones de las relaciones humanas y la búsqueda de identidad" : "explora les contradiccions de les relacions humanes i la recerca d'identitat");
+      
+      const epoca = document.getElementById('epocaInput').value || (currentLang === 'es' ? "la época actual" : "l'època actual");
+      const lloc = document.getElementById('llocInput').value || (currentLang === 'es' ? "un entorno cotidiano" : "un entorn quotidià");
+      
+      const ctxTags = getSelectedTags('contextTags');
+      const ctxCustom = document.getElementById('ctxCustom').value;
+      const contextFinal = [ctxTags, ctxCustom].filter(Boolean).join(' i ') || (currentLang === 'es' ? "social y psicológico" : "social i psicològic");
+
+      const realitat = depurarTextoIA(document.getElementById('realitatInput').value) || (currentLang === 'es' ? "la presión social y los conflictos del entorno" : "la pressió social i els conflictes de l'entorn");
+      const ficcio = depurarTextoIA(document.getElementById('ficcioInput').value) || (currentLang === 'es' ? "los dilemas internos y giros dramáticos de la trama" : "els dilemes interns i girs dramàtics de la trama");
+
+      const nomProtaRaw = document.getElementById('protaNom').value || "Héctor";
+      const nomProta = netejarArticlesNom(nomProtaRaw);
+      const aspecteProta = depurarTextoIA(document.getElementById('protaAspecte').value);
+      const objectiu = depurarTextoIA(document.getElementById('protaObjectiu').value) || (currentLang === 'es' ? "mantener la estabilidad en su vida y superar sus miedos" : "mantenir l'estabilitat en la seva vida i superar les seves pors");
+      const virtut = depurarTextoIA(document.getElementById('protaVirtut').value) || (currentLang === 'es' ? "su sensibilidad e intuición" : "la seva sensibilitat i intuïció");
+      const defecte = depurarTextoIA(document.getElementById('protaDefecte').value) || (currentLang === 'es' ? "la indecisión frente a los problemas" : "la indecisió davant dels problemes");
+      const arcIni = depurarTextoIA(document.getElementById('arcInici').value) || (currentLang === 'es' ? "la duda y la inseguridad" : "la dubte i la inseguretat");
+      const arcFin = depurarTextoIA(document.getElementById('arcFinal').value) || (currentLang === 'es' ? "la aceptación personal y la valentía" : "l'acceptació personal i la valentia");
+
+      const nomProta2Raw = document.getElementById('prota2Nom').value || "Bárbara";
+      const nomProta2 = netejarArticlesNom(nomProta2Raw);
+      const aspecteProta2 = depurarTextoIA(document.getElementById('prota2Aspecte').value);
+
+      const nomAntaRaw = document.getElementById('antaNom').value || (currentLang === 'es' ? "el entorno antagónico" : "l'entorn antagònic");
+      const nomAnta = netejarArticlesNom(nomAntaRaw);
+      const aspecteAnta = depurarTextoIA(document.getElementById('antaAspecte').value);
+
+      const nomSecRaw = document.getElementById('secNom').value || "Martí";
+      const nomSec = netejarArticlesNom(nomSecRaw);
+      const secRol = depurarTextoIA(document.getElementById('secRol').value) || (currentLang === 'es' ? "persona clave en el desarrollo de la historia" : "figura clau en el desenvolupament de la història");
+      const aspecteSec = depurarTextoIA(document.getElementById('secAspecte').value);
+
+      const cnfTags = getSelectedTags('conflicteTags');
+      const cnfCustom = document.getElementById('cnfCustom').value;
+      const conflicteFinal = [cnfTags, cnfCustom].filter(Boolean).join(' / ') || (currentLang === 'es' ? "consigo mismo y su entorno" : "amb ell mateix i el seu entorn");
+      const impediment = depurarTextoIA(document.getElementById('impedimentInput').value) || (currentLang === 'es' ? "la falta de comunicación y el miedo al cambio" : "la falta de comunicació i la por al canvi");
+
+      const temesTags = getSelectedTags('temesTags');
+      const temesCustom = document.getElementById('temesCustom').value;
+      const temesFinals = [temesTags, temesCustom].filter(Boolean).join(', ') || (currentLang === 'es' ? "identidad, crecimiento personal y relaciones humanas" : "identitat, creixement personal i relacions humanes");
+      const pregunta = document.getElementById('preguntaInput').value || (currentLang === 'es' ? "¿Hasta qué punto nuestras decisiones nos definen frente a los demás?" : "Fins a quin punt les nostres decisions ens defineixen davant dels altres?");
+
+      const emocionsTags = getSelectedTags('emocionsTags');
+      const emoCustom = document.getElementById('emocionsCustom').value;
+      const emocionsFinals = [emocionsTags, emoCustom].filter(Boolean).join(', ') || (currentLang === 'es' ? "empatía y reflexión" : "empatia i reflexió");
+      const momentEmocional = depurarTextoIA(document.getElementById('momentEmocional').value) || (currentLang === 'es' ? "el momento de confrontación sincera" : "el moment de confrontació sincera");
+      const girInesperat = depurarTextoIA(document.getElementById('girInesperat').value) || (currentLang === 'es' ? "un acontecimiento no previsto que cambia el rumbo de los hechos" : "un esdeveniment no previst que canvia el rumb dels fets");
+      const expectativa = depurarTextoIA(document.getElementById('expectativaPublic').value) || (currentLang === 'es' ? "una resolución convencional" : "una resolució convencional");
+      const realitatPub = depurarTextoIA(document.getElementById('realitatPublic').value) || (currentLang === 'es' ? "un desenlace transformador" : "un desenllaç transformador");
+
+      if (currentLang === 'es') {
+        document.getElementById('resultDoc').innerHTML = `
+          <div class="doc-header">
+            <h2 class="doc-title">"${titol}"</h2>
+            <div class="doc-genre">${genere}</div>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">1. Presentación de la obra</h3>
+            <p class="doc-paragraph">
+              La obra titulada ${titol} se enmarca dentro del género de ${genere.toLowerCase()} y se sitúa contextualmente en ${lloc} durante ${epoca}. La narración se articula a partir de una premisa central donde ${idea}.
+            </p>
+            <p class="doc-paragraph">
+              A lo largo del relato, la historia explora la dimensión ${contextFinal} del entorno. Para aportar verosimilitud y dinamismo, la obra combina elementos de la realidad como ${realitat} con recursos narrativos de ficción como ${ficcio}.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">2. Sinopsis argumental</h3>
+            <p class="doc-paragraph">
+              En ${lloc}, la vida de ${nomProta} se ve profundamente alterada por la presencia e influencia de ${nomAnta}. A pesar de intentar mantener la estabilidad, surge un conflicto cuando ${impediment}. Esta situación genera una tensión creciente que condiciona el rumbo de los acontecimientos.
+            </p>
+            <p class="doc-paragraph">
+              El punto de inflexión se desencadena a raíz de ${girInesperat}, lo que rompe de manera drástica con lo que en un principio cabía esperar, puesto que el público anticipaba ${expectativa}. La trama alcanza su clímax dramático en ${momentEmocional}, un evento decisivo que obliga a los personajes a posicionarse. Finalmente, la historia concluye con ${realitatPub}, consolidando la transformación de la trama.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">3. Estudio de los personajes</h3>
+            
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta} (Protagonista):</strong> Constituye el núcleo narrativo de la obra. Su objetivo principal es ${objectiu}. Aunque entre sus virtudes destaca ${virtut}, debe enfrentarse a su principal defecto, ${defecte}. Su arco de transformación evoluciona desde ${arcIni} hasta ${arcFin}.${aspecteProta ? ` Físicamente destaca por ser ${aspecteProta}.` : ''}
+              </p>
+            </div>
+
+            ${teSegonProta ? `
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta2} (Co-protagonista):</strong> Figura central que comparte el peso narrativo con ${nomProta}, aportando contraste y matices al conflicto principal.${aspecteProta2 ? ` Presenta un aspecto marcado por ${aspecteProta2}.` : ''}
+              </p>
+            </div>
+            ` : ''}
+
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomSec} (Secundario Clave):</strong> Cumple el rol de ${secRol}, siendo fundamental para el desarrollo del personaje principal y el avance de la acción.${aspecteSec ? ` Su presencia física se caracteriza por ${aspecteSec}.` : ''}
+              </p>
+            </div>
+
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomAnta} (Antagonista / Oposición):</strong> Encarna la fuerza de oposición que frena las aspiraciones del protagonista, representando la resistencia al cambio.${aspecteAnta ? ` Se describe como ${aspecteAnta}.` : ''}
+              </p>
+            </div>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">4. Temas y cuestiones universales</h3>
+            <p class="doc-paragraph">
+              El núcleo temático de la obra profundiza en conceptos universales como ${temesFinals}. A través de la vivencia de los personajes, la historia invita a reflexionar sobre una pregunta de fondo: "${pregunta}". Con ello, la obra busca despertar en el lector emociones asociadas a la ${emocionsFinals}.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">5. Construcción narrativa</h3>
+            <p class="doc-paragraph">
+              La estructura del relato se construye mediante una cuidada progresión del conflicto en relación con ${conflicteFinal}. La combinación del dilema personal del protagonista con la influencia del entorno permite mantener un ritmo constante, garantizando la solidez narrativa del conjunto.
+            </p>
+          </div>
+        `;
+      } else {
+        document.getElementById('resultDoc').innerHTML = `
+          <div class="doc-header">
+            <h2 class="doc-title">"${titol}"</h2>
+            <div class="doc-genre">${genere}</div>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">1. Presentació de l'obra</h3>
+            <p class="doc-paragraph">
+              L'obra titulada ${titol} s'emmarca dins del gènere de ${genere.toLowerCase()} i es situa contextualment a ${lloc} durant ${epoca}. La narració s'articula a partir d'una premissa central on ${idea}.
+            </p>
+            <p class="doc-paragraph">
+              Al llarg del relat, la història explora la dimensió ${contextFinal} de l'entorn. Per aportar versemblança i dinamisme, l'obra combina elements de la realitat com ${realitat} amb recursos narratius de ficció com ${ficcio}.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">2. Sinopsi argumental</h3>
+            <p class="doc-paragraph">
+              A ${lloc}, la vida de ${nomProta} es veu profundament alterada per la presència i influència de ${nomAnta}. Tot i intentar mantenir l'estabilitat, sorgeix un conflicte quan ${impediment}. Aquesta situació genera una tensió creixent que condiciona el rumb dels esdeveniments.
+            </p>
+            <p class="doc-paragraph">
+              El punt d'inflexió es desencadena a arrel de ${girInesperat}, la qual cosa trenca de manera dràstica amb el que en un principi calia esperar, atès que el públic anticipava ${expectativa}. La trama arriba al seu clímax dramàtic en ${momentEmocional}, un esdeveniment decisiu que obliga els personatges a posicionar-se. Finalment, la història conclou amb ${realitatPub}, consolidant la transformació de la trama.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">3. Estudi dels personatges</h3>
+            
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta} (Protagonista):</strong> Constitueix el nucli narratiu de l'obra. El seu objectiu principal és ${objectiu}. Tot i que entre les seves virtuts destaca ${virtut}, s'ha d'enfrontar al seu principal defecte, ${defecte}. El seu arc de transformació evoluciona des de ${arcIni} fins a ${arcFin}.${aspecteProta ? ` Físicament destaca per ser ${aspecteProta}.` : ''}
+              </p>
+            </div>
+
+            ${teSegonProta ? `
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomProta2} (Co-protagonista):</strong> Figura central que comparteix el pes narratiu amb ${nomProta}, aportant contrast i matisos al conflicte principal.${aspecteProta2 ? ` Presenta un aspecte marcat per ${aspecteProta2}.` : ''}
+              </p>
+            </div>
+            ` : ''}
+
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomSec} (Secundari Clau):</strong> Compleix el rol de ${secRol}, sent fonamental per al desenvolupament del protagonista i l'avanç de l'acció.${aspecteSec ? ` La seva presència física es caracteritza per ${aspecteSec}.` : ''}
+              </p>
+            </div>
+
+            <div class="character-entry-clean">
+              <p class="doc-paragraph" style="margin-bottom:0;">
+                <strong>${nomAnta} (Antagonista / Oposició):</strong> Encarna la força d'oposició que frena les aspiracions del protagonista, representant la resistència al canvi.${aspecteAnta ? ` Es descriu com ${aspecteAnta}.` : ''}
+              </p>
+            </div>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">4. Temes i qüestions universals</h3>
+            <p class="doc-paragraph">
+              El nucli temàtic de l'obra aprofundeix en conceptes universals com ${temesFinals}. A través de la vivència dels personatges, la història convida a reflexionar sobre una pregunta de fons: "${pregunta}". Amb això, l'obra cerca despertar en el lector emocions associades a la ${emocionsFinals}.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3 class="doc-section-title">5. Construcció narrativa</h3>
+            <p class="doc-paragraph">
+              L'estructura del relat es construeix mitjançant una acurada progressió del conflicte en relació amb ${conflicteFinal}. La combinació del dilema personal del protagonista amb la influència de l'entorn permet mantenir un ritme constant, garantint la solidesa narrativa del conjunt.
+            </p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
